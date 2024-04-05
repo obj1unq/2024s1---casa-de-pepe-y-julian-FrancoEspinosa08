@@ -1,0 +1,44 @@
+import casa.*
+test "Tiene víveres suficientes
+Hay que hacer reparaciones
+No está en orden" {
+	casaDePepeYJulian.romper(1000)
+	assert.equals( true, casaDePepeYJulian.tieneViveresSuficientes())
+	assert.equals( true,casaDePepeYJulian.hayQueReparar())
+	assert.equals( false,casaDePepeYJulian.casaEnOrden())
+
+}
+test "para una cuenta vacía con 20 pesos de costo por operación, 
+si se deposita 1000 pesos, el saldo queda en 980 pesos."{
+	pepeYJulian.depositarConGastos(1000)
+	assert.equals( 980,pepeYJulian.saldoCuentaConGastos())
+}
+test"suponiendo que configuramos la cuenta combinada así: la primaria es la cuenta con gastos con 50 pesos de costo de operación 
+y la secundaria es la cuenta corriente, ya con 500 pesos de saldo. 
+Luego, Se depositan 100 pesos en la cuenta combinada (van a la cuenta con gastos, porque es la primaria, depositándose 50 pesos efectivos).
+Si se extraen 200 pesos (salen de la cuenta corriente, ya que a la primaria no le alcanza, dejándola en 300 pesos).
+Verificar que el saldo de la cuenta con gastos queda en 50 pesos, la cuenta corriente con 300 pesos y la combindada con 350 pesos."{
+	combinada.cuentaPrimaria(gastos)
+	combinada.cuentaSecundaria(corriente)
+	gastos.costoOperacion(50)
+	corriente.depositar(500)
+	pepeYJulian.depositarCombinada(100)
+	pepeYJulian.extraerCombinada(200)
+	assert.equals( 50,pepeYJulian.saldoCuentaConGastos())
+	assert.equals( 300,pepeYJulian.saldoCuentaCorriente())
+	assert.equals( 350,pepeYJulian.saldoCuentaCombinada())
+}
+test "Caso de Prueba: Si la casa tiene 50% de los víveres, necesita 100 pesos para reparaciones, 
+tiene asociada la cuenta corriente con 1000 pesos de saldo y una estrategia de ahorro Full. Al hacer un mantenimiento de la casa:
+Como la casa no está en orden, aumenta 40% de sus víveres gastando 40 * 5 = 200 pesos.
+Si bien luego les alcanza para hacer las reparaciones, no sobrarían 1000 pesos, así que no se hacen.
+Verificar que la casa queda con 90% de víveres, mantiene los 100 pesos para reparaciones, y la cuenta corriente queda con 800 pesos."{
+	casaDePepeYJulian.viveres(50)
+	casaDePepeYJulian.montoReparacion(100)
+	full.cuentaAsociada(corriente)
+	corriente.depositar(1000)
+	full.mantener()
+	assert.equals( 90,casaDePepeYJulian.viveres())
+	assert.equals( 100,casaDePepeYJulian.montoReparacion())
+	assert.equals( 800,corriente.saldo())
+}
